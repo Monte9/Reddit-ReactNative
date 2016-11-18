@@ -7,18 +7,16 @@ export default class RedditClient {
     }
   }
 
-  // use "fetch" to retrieve data from endpoints on the above baseUrl and add the defaultHeaders to your request
-  getMoviesFromApiAsync() {
-    return fetch(this.baseUrl, {
-              method: 'GET',
-              headers: this.defaultHeaders
-            })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return responseJson.movies;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+  getPosts = (endpoint) => this.fetchfromAPI(this.baseUrl + endpoint)
+  getRandom = () => this.fetchfromAPI(this.baseUrl + 'random')
+
+  fetchfromAPI = url => (
+    fetch(url, {
+      headers: this.defaultHeaders
+    })
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error(error)
+    })
+  )
 }

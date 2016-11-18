@@ -7,15 +7,13 @@ import { userActionCreators } from '../redux'
 import Storage from '../api/Storage'
 
 const mapStateToProps = (state) => ({
-  // take your state and put it into the props for this component
+  isAuthenticating: state.user.isAuthenticating,
+  token: state.user.token
 })
 
 class Login extends Component {
-  static propTypes = {
-  }
-
   componentDidMount() {
-    // start the auth process
+    this.props.dispatch(userActionCreators.startAuthentication())
   }
 
   // We watch for changes in navigation, because we asked Reddit to redirect us
@@ -26,6 +24,16 @@ class Login extends Component {
       const regex = /^about:\/\/callback\/login#access_token=(.+)&token/
       let accessToken = navState.url.match(regex)[1]
       // dispatch to store the token
+      console.log("yo doing it now")
+      this.props.dispatch(userActionCreators.authenticationSuccess(accessToken))
+    }
+  }
+
+  componentDidUpdate() {
+    // the token must have been asynchronously loaded if available
+    if (this.props.token) {
+      console.log("yooooo")
+      Actions.pop()
     }
   }
 
