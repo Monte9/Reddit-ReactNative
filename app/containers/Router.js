@@ -15,7 +15,7 @@ class TabIcon extends Component {
         <Image
           style={styles.tabBarIconImage}
           source={require('../img/posts.png')}/>
-        <Text style={{color: this.props.selected ? 'red' :'black'}}>{this.props.tabBarText}</Text>
+        <Text style={{color: this.props.selected ? 'red' :'black', padding: 5}}>{this.props.tabBarText}</Text>
       </View>
     );
   }
@@ -60,7 +60,8 @@ let styles = StyleSheet.create({
     borderTopWidth: 0.5,
     borderColor: '#b7b7b7',
     backgroundColor: '#fff',
-    opacity: 1
+    opacity: 1,
+    height: 64,
   },
   tabBarIcon: {
     flex: 1,

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { View, Text, ListView, RefreshControl, StyleSheet } from 'react-native'
+import { View, Text, ListView, ScrollView, RefreshControl, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
 import { postsActionCreators } from '../redux'
@@ -8,49 +8,46 @@ import Post from '../components/Post'
 import Comment from '../components/Comment'
 
 const mapStateToProps = (state) => ({
-  // take the relevant state from redux and put it into props here
+  token: state.user.token,
+  posts: state.posts.subreddits.random,
+  postsError: state.posts.error,
+  postsTimestamp: state.posts.timestamp,
+  isFetchingPosts: state.posts.isFetching
 })
 
 class Random extends Component {
-  static propTypes = {
-  }
-  constructor(props) {
-    super(props)
-    //create your dataSource in state here
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-    this.state = {
-      dataSource: ds.cloneWithRows([])
-    }
-  }
-
   componentDidMount() {
-    //fetch random posts here
+    const { token, dispatch, subreddit } = this.props
+
+    if(token === null) {
+      Actions.login()
+    }
+    dispatch(postsActionCreators.fetchPosts(subreddit))
   }
 
   componentWillReceiveProps(nextProps) {
-    // If we are now logged in, check if we need dto fetch posts
-    // update your dataSource if the props have changed
+    const { token, dispatch, subreddit } = this.props
+
+    if (!token && nextProps.token) {
+      dispatch(postsActionCreators.fetchPosts(subreddit))
+    }
   }
 
-  renderPostOfType = (post) => {
-    return <View/>
-  }
+  renderPosts() {
+    const { posts } = this.props
 
-
-  renderPosts = (post) => {
-    // ListView by default removes clipped subviews
-    // but only for children who have an overflow: 'hidden'
-    // on their style.
-    // Very simple but makes a huge difference!
     return (
-      <View style={{overflow: 'hidden'}}>
-        {this.renderPostOfType(post)}
-      </View>
+      posts.map((post, index) => {
+        return (
+          <Post
+            key={post.data.id}
+            title={post.data.title}
+            thumbnail={post.data.thumbnail}
+            subreddit={post.data.subreddit}
+            url={post.data.url}/>
+        )
+      })
     )
-  }
-
-  refreshPosts = () => {
-    // make a new call to random and get some new posts!
   }
 
   /**
@@ -59,27 +56,35 @@ class Random extends Component {
    * ListView for perf
    * https://facebook.github.io/react-native/docs/performance.html#listview-initial-rendering-is-too-slow-or-scroll-performance-is-bad-for-large-lists
    */
-  render() {
-    return (
-      <View>
-        <ListView
-          enableEmptySections={true}
-          refreshControl={
-            <RefreshControl
-              refreshing={true}
-              onRefresh={this.refreshPosts}
-              />
-          }
-          dataSource={this.state.dataSource}
-          renderRow={this.renderPosts}
-         />
-      </View>
-    )
-  }
+   /**
+    * Using a ScrollView
+    * https://facebook.github.io/react-native/docs/using-a-scrollview.html
+    */
+   render() {
+     return (
+       <View style={{paddingBottom: 64}}>
+         <ScrollView>
+           {this.renderPosts()}
+         </ScrollView>
+       </View>
+     )
+   }
 }
 
 let styles = StyleSheet.create({
-  //implement the styles here
+  container: {
+    flex: 1
+  },
+  error: {
+    flex: 1,
+    backgroundColor: 'red',
+    padding: 15
+  },
+  loading: {
+    flex: 1,
+    backgroundColor: '#eee',
+    padding: 15
+  }
 })
 
 export default connect(mapStateToProps)(Random)

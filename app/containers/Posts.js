@@ -32,9 +32,21 @@ class Posts extends Component {
     }
   }
 
-  renderPosts = () => {
-    // can use this to render posts in the ScrollView
-    return <View/>
+  renderPosts() {
+    const { posts } = this.props
+
+    return (
+      posts.map((post, index) => {
+        return (
+          <Post
+            key={post.data.id}
+            title={post.data.title}
+            thumbnail={post.data.thumbnail}
+            subreddit={post.data.subreddit}
+            url={post.data.url}/>
+        )
+      })
+    )
   }
 
   /**
@@ -43,7 +55,7 @@ class Posts extends Component {
    */
   render() {
     return (
-      <View>
+      <View style={{paddingBottom: 64}}>
         <ScrollView>
           {this.renderPosts()}
         </ScrollView>
