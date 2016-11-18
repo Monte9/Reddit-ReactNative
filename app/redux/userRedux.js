@@ -14,14 +14,6 @@ const authenticationSuccess = (token) => {
   }
 }
 
-/**
- * This works because of our redux-thunk middleware in ./store/configureStore
- *
- * ...action creators that return a function instead of an action.
- * The thunk can be used to delay the dispatch of an action,
- * or to dispatch only if a certain condition is met.
- * The inner function receives the functions dispatch and getState as parameters.
- */
 const startAuthentication = () => async (dispatch, getState) => {
   // Try and retrieve token from Storage
   const tokenExpired = await tokenHasExpired()

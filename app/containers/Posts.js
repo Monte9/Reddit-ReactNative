@@ -7,21 +7,29 @@ import { postsActionCreators } from '../redux'
 import Post from '../components/Post'
 
 const mapStateToProps = (state) => ({
-  //fetch relevent redux state and pass into props here
+  token: state.user.token,
+  posts: state.posts.subreddits.hot,
+  postsError: state.posts.error,
+  postsTimestamp: state.posts.timestamp,
+  isFetchingPosts: state.posts.isFetching
 })
 
-
-
 class Posts extends Component {
-  static propTypes = {
-  }
-
   componentDidMount() {
-    //fetch the posts here
+    const { token, dispatch, subreddit } = this.props
+
+    if(token === null) {
+      Actions.login()
+    }
+    dispatch(postsActionCreators.fetchPosts(subreddit))
   }
 
   componentWillReceiveProps(nextProps) {
-    // If we are now logged in, check if we need to fetch posts
+    const { token, dispatch, subreddit } = this.props
+
+    if (!token && nextProps.token) {
+      dispatch(postsActionCreators.fetchPosts(subreddit))
+    }
   }
 
   renderPosts = () => {

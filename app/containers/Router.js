@@ -26,13 +26,6 @@ class AppRouter extends Component {
     return (
       <Router>
         <Scene key="root">
-          <Scene
-            key={'loginContent'}
-            direction={'vertical'}
-            title={'Login'}
-            component={Login}
-            style={{paddingTop: 64}}
-            panHandlers={null} />
           <Scene key={'tabs'} hideNavBar={true} tabs={true} tabBarStyle={styles.tabBar} direction={'vertical'}>
             <Scene
                key={'posts'}
@@ -52,6 +45,9 @@ class AppRouter extends Component {
               passProps={true}
               icon={TabIcon}
               style={{paddingTop: 64}}/>
+          </Scene>
+          <Scene key={'login'} direction={'vertical'} title={'Login'} panHandlers={null}>
+            <Scene key={'loginContent'} title={'Reddit Login'} component={Login} style={{paddingTop: 64}} panHandlers={null} />
           </Scene>
         </Scene>
       </Router>

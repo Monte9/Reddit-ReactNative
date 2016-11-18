@@ -23,16 +23,14 @@ class Login extends Component {
       // Regex shortcut to grab the access_token if the URL matches this format.
       const regex = /^about:\/\/callback\/login#access_token=(.+)&token/
       let accessToken = navState.url.match(regex)[1]
-      // dispatch to store the token
-      console.log("yo doing it now")
       this.props.dispatch(userActionCreators.authenticationSuccess(accessToken))
     }
   }
 
   componentDidUpdate() {
     // the token must have been asynchronously loaded if available
+    console.log(this.props.token)
     if (this.props.token) {
-      console.log("yooooo")
       Actions.pop()
     }
   }

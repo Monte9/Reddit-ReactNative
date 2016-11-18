@@ -1,0 +1,1 @@
+ const unsigned char RedditClientVersionString[] __attribute__ ((used)) = "@(#)PROGRAM:RedditClient  PROJECT:RedditClient-1" "\n"; const double RedditClientVersionNumber __attribute__ ((used)) = (double)1.;
