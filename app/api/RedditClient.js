@@ -6,7 +6,19 @@ export default class RedditClient {
         'Authorization': `bearer ${token}`,
     }
   }
-  
-  // use "fetch" to retrieve data from endpoints on the above baseUrl and add the defaultHeaders to your request
 
+  // use "fetch" to retrieve data from endpoints on the above baseUrl and add the defaultHeaders to your request
+  getMoviesFromApiAsync() {
+    return fetch(this.baseUrl, {
+              method: 'GET',
+              headers: this.defaultHeaders
+            })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        return responseJson.movies;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 }
