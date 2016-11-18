@@ -10,7 +10,12 @@
 
 The following features are implemented in the app:
 
-- [x] feature list coming soon
+- [x] Authenticate user using Reddit sign in webview
+- [x] Display tab bars for Hot and Random posts
+- [x] Fetch and render posts from /hot & /random
+- [ ] Use custom form to get username & password for reddit sign in
+- [ ] Fix Webview component on Android - doesn't record clicks on webview
+- [ ] Decode image preview from API response to display full-size images for posts
 
 ## Notes
 
